@@ -1,0 +1,1 @@
+Codul aparut se va copia intr-un notepad, se salveaza si dupa se va modifica extensie .drawio
