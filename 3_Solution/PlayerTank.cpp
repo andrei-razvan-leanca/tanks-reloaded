@@ -3,6 +3,7 @@
 #include "BotTank.h"
 
 extern Game* game;
+PlayerTank* PlayerTank::instance=nullptr;
 
 PlayerTank::PlayerTank(const int& w, const int& h):iTank{w,h}{
     health=3;
@@ -10,11 +11,9 @@ PlayerTank::PlayerTank(const int& w, const int& h):iTank{w,h}{
     center=boundingRect().center();
     origin=QPointF(center.x(), center.y());
     setTransformOriginPoint(origin);
+
     rotation=180;
     setRotation(rotation);
-
-
-    //qDebug()<<"widthTank: "<<boundingRect().width()<<"heightTank: "<< boundingRect().height();
 
     setPos(width/2,height-boundingRect().height());
 
@@ -27,29 +26,48 @@ PlayerTank::~PlayerTank()
 
 }
 
+PlayerTank *PlayerTank::getInstance(const int &w, const int& h)
+{
+    if(!instance){
+        instance=new PlayerTank(w,h);
+    }
+    return instance;
+}
+
+void PlayerTank::destroyInstance()
+{
+    if(instance){
+        delete instance;
+        instance=nullptr;
+    }
+}
 
 void PlayerTank::keyPressEvent(QKeyEvent *event)
 {
     qDebug()<<"pos: "<<x()<<"  "<< y();
 
-
-
-    if(event->key()==Qt::Key_W && y()>0 && verifyColliding==0){
+    if(event->key()==Qt::Key_W && y()>0){
         setPos(x(),y()-10);
         rotation=180;
+
+        checkColliding();
+        if(verifyColliding){
+            setPos(x(),y()+10);
+        }
+
     }
 
-    else if(event->key()==Qt::Key_S && y()+boundingRect().height()<height && verifyColliding==0){
+    else if(event->key()==Qt::Key_S && y()+boundingRect().height()<height){
         setPos(x(),y()+10);
         rotation=0;
     }
 
-    else if(event->key()==Qt::Key_A && x()>0 && verifyColliding==0){
+    else if(event->key()==Qt::Key_A && x()>0){
         setPos(x()-10,y());
         rotation=90;
     }
 
-    else if(event->key()==Qt::Key_D && x() + boundingRect().width()*2 <width && verifyColliding==0){
+    else if(event->key()==Qt::Key_D && x() + boundingRect().width()*2 <width){
         setPos(x()+10,y());
         rotation=270;
     }
@@ -68,7 +86,6 @@ void PlayerTank::keyPressEvent(QKeyEvent *event)
         }
     }
 
-    checkColliding();
     verifyColliding=0;
     setRotation(rotation);
 }
@@ -103,4 +120,3 @@ void PlayerTank::checkColliding()
         }
     }
 }
-
