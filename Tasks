@@ -1,0 +1,3 @@
+1. Sa lucrez la coliziuni: - tancurile sa se opreasca daca se ating, sa nu treaca unul prin altul;
+                           - tancurile bot sa nu fie create peste alte tancuri;
+2. Sa gasesc un algoritm pentru deplasarea tancurilor bot, astfel incat sa para tancuri controlate de un player;                                         
